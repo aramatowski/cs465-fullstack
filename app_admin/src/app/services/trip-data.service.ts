@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
+import { response } from 'express';
 
 import { Trip } from '../models/trip';
 
 @Injectable()
 export class TripDataService {
   [x: string]: any;
-  
 
   constructor(private http: Http) { }
 
@@ -16,9 +16,9 @@ export class TripDataService {
   public addTrip(formData: Trip): Promise<Trip> {
     console.log('Inside TripDataService#addTrip');
     return this.http
-      .post(`${this.tripUrl}trips`, formData)
+      .post(this.tripUrl, formData) // pass form data in request body
       .toPromise()
-      .then(response =>response.json() as Trip[])
+      .then(response => response?.json() as Trip[])
       .catch(this.handleError);
   }
 
@@ -32,9 +32,9 @@ export class TripDataService {
   }
 
   public getTrips(): Promise<Trip[]> {
-    console.log(`Inside TripDataService#getTrips`);
+    console.log('Inside TripDataService#getTrips');
     return this.http
-      .get(`${this.apiBaseUrl}trips`)
+      .get(this.tripUrl)
       .toPromise()
       .then(response => response?.json() as Trip[])
       .catch(this.handleError);
@@ -51,8 +51,8 @@ export class TripDataService {
   }
 
   private handleError(error: any): Promise<any> {
-    console.error(`Something has gone wrong`, error); // for demo purposes only
-    return Promise.reject(error. message || error);
+    console.error('Something has gone wrong', error); // for demo purposes only
+    return Promise.reject(error.message || error);
   }
 
 }
