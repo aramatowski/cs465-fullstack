@@ -3,32 +3,15 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "travlr-admin": {
+    "linux-store-frontend": {
       "projectType": "application",
       "schematics": {
-        "@schematics/angular:class": {
-          "skipTests": true
-        },
         "@schematics/angular:component": {
-          "skipTests": true
+          "prefix": "store",
+          "style": "scss"
         },
         "@schematics/angular:directive": {
-          "skipTests": true
-        },
-        "@schematics/angular:guard": {
-          "skipTests": true
-        },
-        "@schematics/angular:interceptor": {
-          "skipTests": true
-        },
-        "@schematics/angular:pipe": {
-          "skipTests": true
-        },
-        "@schematics/angular:resolver": {
-          "skipTests": true
-        },
-        "@schematics/angular:service": {
-          "skipTests": true
+          "prefix": "store"
         }
       },
       "root": "",
@@ -38,61 +21,74 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/travlr-admin",
+            "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/robots.txt",
+              "src/google1a2b17b52dfeb852.html",
+              "src/sitemap.txt",
+              "src/sitemap-dev.txt"
             ],
             "styles": [
-              "src/assets/css/styles.css"
+              "src/styles.scss",
+              "src/themes/flathub/flathub-theme.scss",
+              "src/themes/flathub/flathub-fonts.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
-                }
-              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "outputHashing": "all"
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
             },
-            "development": {
-              "buildOptimizer": false,
-              "optimization": false,
-              "vendorChunk": true,
-              "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true
-            }
+            "development": {}
           },
           "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "proxyConfig": "proxy.conf.json"
+          },
           "configurations": {
             "production": {
-              "browserTarget": "travlr-admin:build:production"
+              "browserTarget": "linux-store-frontend:build:production"
             },
             "development": {
-              "browserTarget": "travlr-admin:build:development"
+              "browserTarget": "linux-store-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -100,7 +96,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "travlr-admin:build"
+            "browserTarget": "linux-store-frontend:build"
           }
         },
         "test": {
@@ -110,17 +106,52 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
             "styles": [
-              "src/assets/css/styles.css"
+              "src/styles.scss",
+              "src/themes/flathub/flathub-theme.scss",
+              "src/themes/flathub/flathub-fonts.scss"
+            ],
+            "assets": [
+              "src/assets"
             ],
             "scripts": []
           }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "tsconfig.app.json",
+              "tsconfig.spec.json",
+              "e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "src/app/shared/editors-choice-*.ts",
+              "src/app/shared/featured-collections.ts",
+              "src/app/shared/popular-apps.ts",
+              "src/app/shared/recently-updated-apps.ts",
+              "src/app/shared/categories.ts",
+              "src/app/shared/mock-*.ts"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e/protractor.conf.js"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "linux-store-frontend:serve:production"
+            },
+            "development": {
+              "devServerTarget": "linux-store-frontend:serve:development"
+            }
+          },
+          "defaultConfiguration": "development"
         }
       }
-    }
-  }
+    }},
+    "defaultProject": "linux-store-frontend"
 }
